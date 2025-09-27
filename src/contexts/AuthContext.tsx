@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
-  token: string | null;
+  userToken: string | null;
   setUserToken: (token: string) => void;
   logout: () => void;
 }
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, setUserToken, logout }}>
+    <AuthContext.Provider value={{ userToken: token, setUserToken, logout }}>
       {children}
     </AuthContext.Provider>
   );
