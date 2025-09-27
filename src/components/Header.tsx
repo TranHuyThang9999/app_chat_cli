@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Header() {
-  const { userToken, logout } = useAuth();
+  const { userToken, logout, isLoading } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -28,27 +28,32 @@ export default function Header() {
             <Link href="/settings" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Settings</Link>
           </nav>
 
-          {/* User Menu */}
-          <div className="hidden md:flex items-center space-x-4">
-            {userToken ? (
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 text-sm font-medium">U</span>
-                </div>
-                <button
-                  onClick={logout}
-                  className="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <>
-                <Link href="/login" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</Link>
-                <Link href="/register" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">Register</Link>
-              </>
-            )}
-          </div>
+           {/* User Menu */}
+           <div className="hidden md:flex items-center space-x-4">
+             {isLoading ? (
+               <div className="flex items-center space-x-2">
+                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                 <span className="text-gray-600 text-sm">Loading...</span>
+               </div>
+             ) : userToken ? (
+               <div className="flex items-center space-x-3">
+                 <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                   <span className="text-gray-600 text-sm font-medium">U</span>
+                 </div>
+                 <button
+                   onClick={logout}
+                   className="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                 >
+                   Logout
+                 </button>
+               </div>
+             ) : (
+               <>
+                 <Link href="/login" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</Link>
+                 <Link href="/register" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">Register</Link>
+               </>
+             )}
+           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -72,14 +77,19 @@ export default function Header() {
             <Link href="/dashboard" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Dashboard</Link>
             <Link href="/chat" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Chat</Link>
             <Link href="/settings" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Settings</Link>
-            {userToken ? (
-              <button onClick={logout} className="w-full text-left text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium">Logout</button>
-            ) : (
-              <>
-                <Link href="/login" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Login</Link>
-                <Link href="/register" className="block bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium">Register</Link>
-              </>
-            )}
+             {isLoading ? (
+               <div className="flex items-center space-x-2 px-3 py-2">
+                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                 <span className="text-gray-600 text-sm">Loading...</span>
+               </div>
+             ) : userToken ? (
+               <button onClick={logout} className="w-full text-left text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium">Logout</button>
+             ) : (
+               <>
+                 <Link href="/login" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Login</Link>
+                 <Link href="/register" className="block bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium">Register</Link>
+               </>
+             )}
           </div>
         </div>
       )}

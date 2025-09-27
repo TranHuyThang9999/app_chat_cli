@@ -2,9 +2,10 @@
 'use client';
 
 import '@ant-design/v5-patch-for-react-19';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface LoginFormValues {
   userName: string;
@@ -12,8 +13,33 @@ interface LoginFormValues {
 }
 
 export default function LoginPage() {
-  const { setUserToken } = useAuth();
+  const { setUserToken, userToken, isLoading } = useAuth();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!isLoading && userToken) {
+      router.push('/dashboard');
+    }
+  }, [userToken, isLoading, router]);
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="mx-auto h-16 w-16 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+            <span className="text-white font-bold text-2xl">AC</span>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span className="ml-2 text-gray-600">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
@@ -62,7 +88,7 @@ export default function LoginPage() {
           <Form<LoginFormValues>
             layout="vertical"
             onFinish={onFinish}
-            initialValues={{ userName: '', password: '' }} // ← sử dụng initialValues thay defaultValue
+            initialValues={{ userName: '', password: '' }}
           >
             <Form.Item
               label="Username"
