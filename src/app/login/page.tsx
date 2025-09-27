@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import CrossTabTest from '@/components/CrossTabTest';
 
 interface LoginFormValues {
   userName: string;
@@ -114,6 +115,9 @@ export default function LoginPage() {
           </Form>
         </div>
       </div>
+      
+      {/* Cross-tab test component */}
+      {/* <CrossTabTest /> */}
     </div>
   );
 }

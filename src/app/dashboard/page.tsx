@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import CrossTabTest from '@/components/CrossTabTest';
 
 export default function DashboardPage() {
   const { userToken, isLoading } = useAuth();
@@ -64,12 +65,32 @@ export default function DashboardPage() {
                       {userToken ? 'Active' : 'Not Available'}
                     </span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Cross-Tab Sync:</span>
+                    <span className="text-blue-600 font-medium">Enabled</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg max-w-md mx-auto">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">
+                  🧪 Cross-Tab Test
+                </h3>
+                <p className="text-sm text-blue-700 mb-3">
+                  Open this app in multiple tabs and try logging in/out in one tab. 
+                  Watch how other tabs automatically sync!
+                </p>
+                <div className="text-xs text-blue-600">
+                  💡 The status indicator in the bottom-right corner shows real-time sync status.
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Cross-tab test component */}
+      {/* <CrossTabTest /> */}
     </div>
   );
 }
