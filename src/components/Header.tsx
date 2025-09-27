@@ -2,10 +2,21 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import LoginModal from './LoginModal';
 
 export default function Header() {
   const { userToken, logout, isLoading } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setLoginModalOpen(true);
+  };
+
+  const handleCloseLoginModal = () => {
+    setLoginModalOpen(false);
+  };
 
   return (
     <header className="bg-white shadow-md border-b border-gray-200">
@@ -49,7 +60,12 @@ export default function Header() {
                </div>
              ) : (
                <>
-                 <Link href="/login" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</Link>
+                 <button 
+                   onClick={handleLoginClick}
+                   className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                 >
+                   Login
+                 </button>
                  <Link href="/register" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">Register</Link>
                </>
              )}
@@ -86,13 +102,24 @@ export default function Header() {
                <button onClick={logout} className="w-full text-left text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium">Logout</button>
              ) : (
                <>
-                 <Link href="/login" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Login</Link>
+                 <button 
+                   onClick={handleLoginClick}
+                   className="w-full text-left text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
+                 >
+                   Login
+                 </button>
                  <Link href="/register" className="block bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium">Register</Link>
                </>
              )}
           </div>
         </div>
       )}
+      
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={loginModalOpen} 
+        onClose={handleCloseLoginModal} 
+      />
     </header>
   );
 }

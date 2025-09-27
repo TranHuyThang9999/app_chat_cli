@@ -12,7 +12,8 @@ export default function DashboardPage() {
   // Redirect if not logged in
   useEffect(() => {
     if (!isLoading && !userToken) {
-      router.push('/login');
+      // Don't redirect to login page, redirect to home instead
+      router.push('/');
     }
   }, [userToken, isLoading, router]);
 

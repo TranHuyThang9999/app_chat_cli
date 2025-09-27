@@ -84,7 +84,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       detail: { key: 'token', newValue: null }
     }));
     
-    router.push('/login');
+    // Don't redirect to login page, let user stay on current page
+    // They can click Login button in header to open modal
   };
 
   return (
