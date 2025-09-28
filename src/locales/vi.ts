@@ -136,5 +136,7 @@ export const vi = {
     updating: 'Đang cập nhật...',
     updateSuccess: 'Cập nhật hồ sơ thành công',
     updateFailed: 'Không thể cập nhật hồ sơ',
+    editProfile: 'Chỉnh sửa hồ sơ',
+
   },
 } as const;

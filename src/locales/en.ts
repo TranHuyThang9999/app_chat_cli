@@ -136,5 +136,6 @@ export const en = {
     updating: 'Updating...',
     updateSuccess: 'Profile updated successfully',
     updateFailed: 'Failed to update profile',
+    editProfile: 'Edit Profile',
   },
 } as const;
