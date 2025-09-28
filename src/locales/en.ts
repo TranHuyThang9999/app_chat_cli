@@ -12,6 +12,7 @@ export const en = {
     edit: 'Edit',
     close: 'Close',
     retry: 'Retry',
+    reset: 'Reset',
   },
 
   // Navigation
@@ -48,6 +49,25 @@ export const en = {
     loginFailed: 'Login failed',
     dontHaveAccount: "Don't have an account?",
     signUp: 'Sign up',
+    createAccount: 'Create a new account',
+    alreadyHaveAccount: 'Already have an account?',
+    register: 'Register',
+    registering: 'Registering...',
+    registerSuccess: 'Registration successful!',
+    registerFailed: 'Registration failed',
+    nickname: 'Nickname',
+    enterNickname: 'Enter your nickname',
+    nicknameRequired: 'Please input your nickname',
+    email: 'Email',
+    enterEmail: 'Enter your email',
+    emailRequired: 'Please input your email',
+    emailInvalid: 'Please enter a valid email',
+    confirmPassword: 'Confirm Password',
+    enterConfirmPassword: 'Confirm your password',
+    confirmPasswordRequired: 'Please confirm your password',
+    passwordsNotMatch: 'The two passwords do not match',
+    phoneNumber: 'Phone Number',
+    enterPhoneNumber: 'Enter your phone number',
   },
 
   // Home page
@@ -95,5 +115,8 @@ export const en = {
     notSpecified: 'Not Specified',
     fetchError: 'Failed to fetch profile information',
     noData: 'No profile data available',
+    enterAge: 'Enter your age',
+    selectBirthDate: 'Select your birth date',
+    enterAddress: 'Enter your address',
   },
 } as const;
