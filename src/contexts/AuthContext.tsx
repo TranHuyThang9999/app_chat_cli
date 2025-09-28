@@ -3,18 +3,31 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+interface UserProfile {
+  nickName: string;
+  avatar: string;
+  userName: string;
+  email: string;
+}
 
 interface AuthContextType {
   userToken: string | null;
+  userProfile: UserProfile | null;
   setUserToken: (token: string) => void;
   logout: () => void;
   isLoading: boolean;
+  fetchUserProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -26,6 +39,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     setIsLoading(false);
   }, []);
+
+  // Fetch user profile when token changes
+  useEffect(() => {
+    if (token) {
+      fetchUserProfile();
+    } else {
+      setUserProfile(null);
+    }
+  }, [token]);
 
   // Listen for storage changes from other tabs
   useEffect(() => {
@@ -63,6 +85,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
+  const fetchUserProfile = async () => {
+    if (!token) return;
+    
+    try {
+      const response = await axios.get(`${apiUrl}/api/Users/profile`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'accept': '*/*'
+        }
+      });
+      
+      if (response.data.code === 0) {
+        setUserProfile(response.data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching user profile:', err);
+      // Don't set error state, just keep profile as null
+    }
+  };
+
   const setUserToken = (t: string) => {
     setToken(t);
     localStorage.setItem('token', t);
@@ -80,6 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setToken(null);
+    setUserProfile(null);
     localStorage.removeItem('token');
     
     // Dispatch custom event for same-tab updates
@@ -92,7 +135,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userToken: token, setUserToken, logout, isLoading }}>
+    <AuthContext.Provider value={{ 
+      userToken: token, 
+      userProfile, 
+      setUserToken, 
+      logout, 
+      isLoading,
+      fetchUserProfile
+    }}>
       {children}
     </AuthContext.Provider>
   );

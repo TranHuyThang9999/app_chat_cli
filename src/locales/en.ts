@@ -11,6 +11,7 @@ export const en = {
     delete: 'Delete',
     edit: 'Edit',
     close: 'Close',
+    retry: 'Retry',
   },
 
   // Navigation
@@ -21,6 +22,7 @@ export const en = {
     login: 'Login',
     logout: 'Logout',
     register: 'Register',
+    profile: 'Profile',
   },
 
   // App branding
@@ -73,5 +75,25 @@ export const en = {
   language: {
     selectLanguage: 'Select Language',
     currentLanguage: 'Current Language',
+  },
+
+  // Profile
+  profile: {
+    personalInfo: 'Personal Information',
+    additionalInfo: 'Additional Information',
+    username: 'Username',
+    nickname: 'Nickname',
+    email: 'Email',
+    phone: 'Phone Number',
+    gender: 'Gender',
+    age: 'Age',
+    birthDate: 'Birth Date',
+    address: 'Address',
+    memberSince: 'Member Since',
+    male: 'Male',
+    female: 'Female',
+    notSpecified: 'Not Specified',
+    fetchError: 'Failed to fetch profile information',
+    noData: 'No profile data available',
   },
 } as const;

@@ -11,6 +11,7 @@ export const vi = {
     delete: 'Xóa',
     edit: 'Chỉnh sửa',
     close: 'Đóng',
+    retry: 'Thử lại',
   },
 
   // Navigation
@@ -21,6 +22,7 @@ export const vi = {
     login: 'Đăng nhập',
     logout: 'Đăng xuất',
     register: 'Đăng ký',
+    profile: 'Hồ sơ',
   },
 
   // App branding
@@ -73,5 +75,25 @@ export const vi = {
   language: {
     selectLanguage: 'Chọn ngôn ngữ',
     currentLanguage: 'Ngôn ngữ hiện tại',
+  },
+
+  // Profile
+  profile: {
+    personalInfo: 'Thông tin cá nhân',
+    additionalInfo: 'Thông tin bổ sung',
+    username: 'Tên đăng nhập',
+    nickname: 'Biệt danh',
+    email: 'Email',
+    phone: 'Số điện thoại',
+    gender: 'Giới tính',
+    age: 'Tuổi',
+    birthDate: 'Ngày sinh',
+    address: 'Địa chỉ',
+    memberSince: 'Thành viên từ',
+    male: 'Nam',
+    female: 'Nữ',
+    notSpecified: 'Không xác định',
+    fetchError: 'Không thể tải thông tin hồ sơ',
+    noData: 'Không có dữ liệu hồ sơ',
   },
 } as const;

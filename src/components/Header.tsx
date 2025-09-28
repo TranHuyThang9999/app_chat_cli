@@ -7,7 +7,7 @@ import LoginModal from './LoginModal';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
-  const { userToken, logout, isLoading } = useAuth();
+  const { userToken, userProfile, logout, isLoading } = useAuth();
   const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -59,9 +59,25 @@ export default function Header() {
                </div>
              ) : userToken ? (
                <div className="flex items-center space-x-3">
-                 <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                   <span className="text-gray-600 text-sm font-medium">U</span>
-                 </div>
+                 <Link href="/profile" className="cursor-pointer">
+                   {userProfile?.avatar ? (
+                     <img 
+                       src={userProfile.avatar} 
+                       alt={userProfile.nickName || userProfile.userName} 
+                       className="w-8 h-8 rounded-full object-cover"
+                     />
+                   ) : userProfile?.nickName || userProfile?.userName ? (
+                     <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                       <span className="text-white text-sm font-medium">
+                         {(userProfile.nickName || userProfile.userName).charAt(0).toUpperCase()}
+                       </span>
+                     </div>
+                   ) : (
+                     <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                       <span className="text-gray-600 text-sm font-medium">U</span>
+                     </div>
+                   )}
+                 </Link>
                  <button
                    onClick={logout}
                    className="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
@@ -112,7 +128,46 @@ export default function Header() {
                  <span className="text-gray-600 text-sm">{t('common.loading')}</span>
                </div>
              ) : userToken ? (
-               <button onClick={logout} className="w-full text-left text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.logout')}</button>
+               <div className="px-3 py-2">
+                 <div className="flex items-center justify-between">
+                   <Link href="/profile" className="flex items-center space-x-2 cursor-pointer">
+                     {userProfile?.avatar ? (
+                       <img 
+                         src={userProfile.avatar} 
+                         alt={userProfile.nickName || userProfile.userName} 
+                         className="w-8 h-8 rounded-full object-cover"
+                       />
+                     ) : userProfile?.nickName || userProfile?.userName ? (
+                       <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                         <span className="text-white text-sm font-medium">
+                           {(userProfile.nickName || userProfile.userName).charAt(0).toUpperCase()}
+                         </span>
+                       </div>
+                     ) : (
+                       <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                         <span className="text-gray-600 text-sm font-medium">U</span>
+                       </div>
+                     )}
+                     <span className="text-gray-700 font-medium">
+                       {userProfile?.nickName || userProfile?.userName || 'User'}
+                     </span>
+                   </Link>
+                   <button
+                     onClick={logout}
+                     className="text-red-600 hover:text-red-800 px-3 py-1 rounded-md text-sm font-medium transition-colors"
+                   >
+                     {t('navigation.logout')}
+                   </button>
+                 </div>
+                 <div className="mt-2">
+                   <Link 
+                     href="/profile" 
+                     className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
+                   >
+                     {t('navigation.profile')}
+                   </Link>
+                 </div>
+               </div>
              ) : (
                <>
                  <button 
