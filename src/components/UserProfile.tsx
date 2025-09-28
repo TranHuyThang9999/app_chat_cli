@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { userService, UserProfile as UserProfileType, UpdateProfileData } from '@/services/user/user.service';
+import FileUpload, { FileUploadRef } from './FileUpload';
 
 export default function UserProfile() {
   const { userToken } = useAuth();
@@ -24,6 +25,7 @@ export default function UserProfile() {
     phoneNumber: '',
     address: ''
   });
+  const fileUploadRef = useRef<FileUploadRef>(null);
 
   useEffect(() => {
     if (userToken) {
@@ -66,6 +68,15 @@ export default function UserProfile() {
       ...prev,
       [name]: name === 'gender' || name === 'age' ? parseInt(value) || 0 : value
     }));
+  };
+
+  const handleAvatarUploadSuccess = (result: any) => {
+    if (result && result.data && result.data.fileUrl) {
+      setFormData(prev => ({
+        ...prev,
+        avatar: result.data.fileUrl
+      }));
+    }
   };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
@@ -297,14 +308,30 @@ export default function UserProfile() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('profile.avatar')}
                 </label>
-                <input
-                  type="text"
-                  name="avatar"
-                  value={formData.avatar || ''}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder={t('profile.avatarPlaceholder') || 'Enter avatar URL'}
-                />
+                <div className="border rounded-md p-4">
+                  {formData.avatar && (
+                    <div className="mb-3">
+                      <img 
+                        src={formData.avatar} 
+                        alt="Current avatar" 
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <FileUpload
+                    ref={fileUploadRef}
+                    onUploadSuccess={handleAvatarUploadSuccess}
+                    accept="image/*"
+                    multiple={false}
+                    showUploadButton={true}
+                  />
+                  <input
+                    type="hidden"
+                    name="avatar"
+                    value={formData.avatar || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
               </div>
               
               <div className="md:col-span-2">
