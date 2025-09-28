@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import apiClient from '../api.config';
 
 export interface UserProfile {
   nickName: string;
@@ -27,17 +25,11 @@ export interface UserProfile {
 export const userService = {
   /**
    * Fetch user profile information
-   * @param token - Authentication token
    * @returns User profile data
    */
-  getProfile: async (token: string): Promise<UserProfile> => {
+  getProfile: async (): Promise<UserProfile> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/Users/profile`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'accept': '*/*'
-        }
-      });
+      const response = await apiClient.get('/api/Users/profile');
       
       if (response.data.code === 0) {
         return response.data.data;

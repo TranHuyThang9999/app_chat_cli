@@ -25,7 +25,7 @@ export default function UserProfile() {
       setLoading(true);
       setError(null);
       
-      const profileData = await userService.getProfile(userToken);
+      const profileData = await userService.getProfile();
       setProfile(profileData);
     } catch (err: any) {
       console.error('Error fetching user profile:', err);

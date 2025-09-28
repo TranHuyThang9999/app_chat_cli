@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!token) return;
     
     try {
-      const profileData = await userService.getProfile(token);
+      const profileData = await userService.getProfile();
       setUserProfile(profileData);
     } catch (err) {
       console.error('Error fetching user profile:', err);
