@@ -2,10 +2,13 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import LoginModal from './LoginModal';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
   const { userToken, logout, isLoading } = useAuth();
+  const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
@@ -28,15 +31,15 @@ export default function Header() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">AC</span>
               </div>
-              <span className="ml-2 text-xl font-semibold text-gray-900">App Chat</span>
+              <span className="ml-2 text-xl font-semibold text-gray-900">{t('app.name')}</span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Dashboard</Link>
-            <Link href="/chat" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Chat</Link>
-            <Link href="/settings" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Settings</Link>
+            <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">{t('navigation.dashboard')}</Link>
+            <Link href="/chat" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">{t('navigation.chat')}</Link>
+            <Link href="/settings" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">{t('navigation.settings')}</Link>
           </nav>
 
            {/* User Menu */}
@@ -44,7 +47,7 @@ export default function Header() {
              {isLoading ? (
                <div className="flex items-center space-x-2">
                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                 <span className="text-gray-600 text-sm">Loading...</span>
+                 <span className="text-gray-600 text-sm">{t('common.loading')}</span>
                </div>
              ) : userToken ? (
                <div className="flex items-center space-x-3">
@@ -55,7 +58,7 @@ export default function Header() {
                    onClick={logout}
                    className="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                  >
-                   Logout
+                   {t('navigation.logout')}
                  </button>
                </div>
              ) : (
@@ -64,11 +67,13 @@ export default function Header() {
                    onClick={handleLoginClick}
                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                  >
-                   Login
+                   {t('navigation.login')}
                  </button>
-                 <Link href="/register" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">Register</Link>
+                 <Link href="/register" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">{t('navigation.register')}</Link>
                </>
              )}
+             {/* Language Switcher */}
+             <LanguageSwitcher size="small" showLabel={false} />
            </div>
 
           {/* Mobile menu button */}
@@ -90,27 +95,31 @@ export default function Header() {
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-200">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link href="/dashboard" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Dashboard</Link>
-            <Link href="/chat" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Chat</Link>
-            <Link href="/settings" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Settings</Link>
+            <Link href="/dashboard" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.dashboard')}</Link>
+            <Link href="/chat" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.chat')}</Link>
+            <Link href="/settings" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.settings')}</Link>
              {isLoading ? (
                <div className="flex items-center space-x-2 px-3 py-2">
                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                 <span className="text-gray-600 text-sm">Loading...</span>
+                 <span className="text-gray-600 text-sm">{t('common.loading')}</span>
                </div>
              ) : userToken ? (
-               <button onClick={logout} className="w-full text-left text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium">Logout</button>
+               <button onClick={logout} className="w-full text-left text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.logout')}</button>
              ) : (
                <>
                  <button 
                    onClick={handleLoginClick}
                    className="w-full text-left text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
                  >
-                   Login
+                   {t('navigation.login')}
                  </button>
-                 <Link href="/register" className="block bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium">Register</Link>
+                 <Link href="/register" className="block bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium">{t('navigation.register')}</Link>
                </>
              )}
+             {/* Mobile Language Switcher */}
+             <div className="px-3 py-2">
+               <LanguageSwitcher size="small" showLabel={true} />
+             </div>
           </div>
         </div>
       )}
