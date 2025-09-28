@@ -115,6 +115,24 @@ export default function UserProfile() {
     }
   };
 
+  const handleCancel = () => {
+    // Reset form data to original profile data
+    if (profile) {
+      setFormData({
+        nickName: profile.nickName || '',
+        avatar: profile.avatar || '',
+        gender: profile.gender || 0,
+        birthDate: profile.birthDate || '',
+        age: profile.age || 0,
+        email: profile.email || '',
+        phoneNumber: profile.phoneNumber || '',
+        address: profile.address || ''
+      });
+    }
+    setIsEditing(false);
+    setUpdateError(null);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center p-8">
@@ -190,23 +208,7 @@ export default function UserProfile() {
             >
               {t('profile.edit')}
             </button>
-          ) : (
-            <div className="flex space-x-2">
-              <button
-                onClick={() => setIsEditing(false)}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm"
-              >
-                {t('common.cancel')}
-              </button>
-              <button
-                onClick={handleUpdateProfile}
-                disabled={updating}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm disabled:opacity-50"
-              >
-                {updating ? t('common.saving') : t('common.save')}
-              </button>
-            </div>
-          )}
+          ) : null}
         </div>
 
         {updateError && (
@@ -348,10 +350,10 @@ export default function UserProfile() {
               </div>
             </div>
             
-            <div className="flex justify-end space-x-2 mt-4">
+            <div className="flex justify-end space-x-2 mt-6 pt-4 border-t border-gray-200">
               <button
                 type="button"
-                onClick={() => setIsEditing(false)}
+                onClick={handleCancel}
                 className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm"
               >
                 {t('common.cancel')}

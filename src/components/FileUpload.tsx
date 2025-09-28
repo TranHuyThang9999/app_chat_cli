@@ -180,8 +180,9 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
       )}
       
       {loading && (
-        <div className="mt-4 flex justify-center">
-          <Spin tip={t('file.uploading') || 'Uploading...'} />
+        <div className="mt-4 flex justify-center items-center">
+          <Spin />
+          <span className="ml-2 text-gray-600">{t('file.uploading') || 'Uploading...'}</span>
         </div>
       )}
     </div>
