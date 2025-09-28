@@ -15,6 +15,19 @@ export const en = {
     reset: 'Reset',
   },
 
+  // File
+  file: {
+    upload: 'Upload',
+    uploading: 'Uploading...',
+    uploadSuccess: 'File uploaded successfully',
+    uploadFailed: 'File upload failed',
+    dragDrop: 'Click or drag file to this area to upload',
+    supportSingle: 'Support for a single file upload.',
+    supportMultiple: 'Support for multiple file upload.',
+    selectFileFirst: 'Please select a file first',
+    selectFile: 'Select File',
+  },
+
   // Navigation
   navigation: {
     dashboard: 'Dashboard',
@@ -118,5 +131,10 @@ export const en = {
     enterAge: 'Enter your age',
     selectBirthDate: 'Select your birth date',
     enterAddress: 'Enter your address',
+    updateAvatar: 'Update Avatar',
+    updateProfile: 'Update Profile',
+    updating: 'Updating...',
+    updateSuccess: 'Profile updated successfully',
+    updateFailed: 'Failed to update profile',
   },
 } as const;
