@@ -4,7 +4,7 @@ import '@ant-design/v5-patch-for-react-19';
 import React, { useState } from 'react';
 import { Form, Input, Button, message, Modal } from 'antd';
 import { useAuth } from '@/contexts/AuthContext';
-
+import axios from 'axios';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface LoginFormValues {
@@ -21,26 +21,27 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const { setUserToken } = useAuth();
   const [loading, setLoading] = useState(false);
 
+
+  
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
     try {
-      const res = await fetch(`${apiUrl}/api/Auth/login`, {
-        method: 'POST',
+      const res = await axios.post(`${apiUrl}/api/Auth/login`, values, {
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
       });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(errorText || 'Login failed');
+      if (res.data.code === 401) {
+        message.error('Invalid username or password');
+        return;
       }
-
-      const data = await res.json();
-      setUserToken(data.token);
+      console.log(res.data);
+      setUserToken(res.data.token);
       message.success('Login successful!');
-      onClose(); // Close modal after successful login
+      onClose();
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      if (axios.isAxiosError(err)) {
+        const errorMsg = err.response?.data || err.message;
+        message.error(errorMsg);
+      } else if (err instanceof Error) {
         message.error(err.message);
       } else {
         message.error('Login failed');
@@ -49,6 +50,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       setLoading(false);
     }
   };
+  
 
   const handleCancel = () => {
     onClose();
