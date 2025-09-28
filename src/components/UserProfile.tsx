@@ -3,31 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import axios from 'axios';
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-interface UserProfileData {
-  nickName: string;
-  avatar: string;
-  gender: number;
-  birthDate: string;
-  age: number;
-  email: string;
-  userName: string;
-  phoneNumber: string;
-  address: string;
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  active: boolean;
-  deleted: boolean;
-}
+import { userService, UserProfile as UserProfileType } from '@/services/user/user.service';
 
 export default function UserProfile() {
   const { userToken } = useAuth();
   const { t } = useLanguage();
-  const [profile, setProfile] = useState<UserProfileData | null>(null);
+  const [profile, setProfile] = useState<UserProfileType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,19 +25,9 @@ export default function UserProfile() {
       setLoading(true);
       setError(null);
       
-      const response = await axios.get(`${apiUrl}/api/Users/profile`, {
-        headers: {
-          'Authorization': `Bearer ${userToken}`,
-          'accept': '*/*'
-        }
-      });
-      
-      if (response.data.code === 0) {
-        setProfile(response.data.data);
-      } else {
-        setError(response.data.message || t('profile.fetchError'));
-      }
-    } catch (err) {
+      const profileData = await userService.getProfile(userToken);
+      setProfile(profileData);
+    } catch (err: any) {
       console.error('Error fetching user profile:', err);
       setError(t('profile.fetchError'));
     } finally {

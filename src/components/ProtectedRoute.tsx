@@ -1,10 +1,22 @@
 'use client';
 
-import { useRequireAuth } from '@/hooks/useRequireAuth';
-import UserProfile from '@/components/UserProfile';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
-export default function ProfilePage() {
-  const { isLoading } = useRequireAuth();
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const { userToken, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !userToken) {
+      router.push('/');
+    }
+  }, [userToken, isLoading, router]);
 
   // Show loading while checking authentication
   if (isLoading) {
@@ -23,18 +35,10 @@ export default function ProfilePage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg p-8">
-            <div className="max-w-3xl mx-auto">
-              <h1 className="text-3xl font-bold text-gray-900 mb-6">User Profile</h1>
-              <UserProfile />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+  // Don't render children if not authenticated
+  if (!userToken) {
+    return null;
+  }
+
+  return <>{children}</>;
+};

@@ -1,22 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 import CrossTabTest from '@/components/CrossTabTest';
 import UserProfile from '@/components/UserProfile';
 
 export default function DashboardPage() {
-  const { userToken, isLoading } = useAuth();
-  const router = useRouter();
-
-  // Redirect if not logged in
-  useEffect(() => {
-    if (!isLoading && !userToken) {
-      // Don't redirect to login page, redirect to home instead
-      router.push('/');
-    }
-  }, [userToken, isLoading, router]);
+  const { isLoading } = useRequireAuth();
 
   // Show loading while checking authentication
   if (isLoading) {
@@ -33,11 +22,6 @@ export default function DashboardPage() {
         </div>
       </div>
     );
-  }
-
-  // Don't render if not authenticated
-  if (!userToken) {
-    return null;
   }
 
   return (
@@ -63,12 +47,6 @@ export default function DashboardPage() {
                       <div className="flex justify-between">
                         <span className="text-gray-600">Status:</span>
                         <span className="text-green-600 font-medium">Online</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Token:</span>
-                        <span className="text-gray-800 font-mono text-sm">
-                          {userToken ? 'Active' : 'Not Available'}
-                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Cross-Tab Sync:</span>

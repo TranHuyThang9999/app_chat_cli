@@ -3,16 +3,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-interface UserProfile {
-  nickName: string;
-  avatar: string;
-  userName: string;
-  email: string;
-}
+import { userService, UserProfile } from '@/services/user/user.service';
 
 interface AuthContextType {
   userToken: string | null;
@@ -89,16 +80,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!token) return;
     
     try {
-      const response = await axios.get(`${apiUrl}/api/Users/profile`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'accept': '*/*'
-        }
-      });
-      
-      if (response.data.code === 0) {
-        setUserProfile(response.data.data);
-      }
+      const profileData = await userService.getProfile(token);
+      setUserProfile(profileData);
     } catch (err) {
       console.error('Error fetching user profile:', err);
       // Don't set error state, just keep profile as null
