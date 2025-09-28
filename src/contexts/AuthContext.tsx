@@ -72,7 +72,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       detail: { key: 'token', newValue: t }
     }));
     
-    router.push('/dashboard');
+    // Add a small delay to ensure state is updated before navigation
+    setTimeout(() => {
+      router.push('/dashboard');
+    }, 100);
   };
 
   const logout = () => {

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -20,6 +20,14 @@ export default function Header() {
   const handleCloseLoginModal = () => {
     setLoginModalOpen(false);
   };
+
+  // Force re-render when userToken changes
+  const [_, forceUpdate] = useState({});
+  
+  useEffect(() => {
+    // This effect will run whenever userToken changes
+    forceUpdate({});
+  }, [userToken]);
 
   return (
     <header className="bg-white shadow-md border-b border-gray-200">

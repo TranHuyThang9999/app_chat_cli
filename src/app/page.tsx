@@ -11,17 +11,14 @@ export default function HomePage() {
   const { userToken, isLoading } = useAuth();
   const { t } = useLanguage();
 
-  useEffect(() => {
-    // Only redirect after loading is complete
-    if (!isLoading) {
-      if (userToken) {
-        router.push('/dashboard');
-      } else {
-        // Don't redirect to login page anymore, stay on home page
-        // User can click Login button in header to open modal
-      }
-    }
-  }, [router, userToken, isLoading]);
+  // Remove duplicate redirect logic - AuthContext handles this automatically
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     if (userToken) {
+  //       router.push('/dashboard');
+  //     }
+  //   }
+  // }, [router, userToken, isLoading]);
 
   // Show loading while checking authentication
   if (isLoading) {
@@ -43,24 +40,8 @@ export default function HomePage() {
     );
   }
 
-  // If user is logged in, redirect to dashboard
-  if (userToken) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
-            <span className="text-white font-bold text-2xl">AC</span>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            {t('app.name')}
-          </h1>
-          <p className="text-gray-600">
-            {t('app.redirecting')}
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // AuthContext automatically redirects logged-in users to dashboard
+  // No need for redirect logic here - just show home page normally
 
   // Show home page for non-authenticated users
   return (
