@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { message, Upload, Button, Spin } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { fileService, FileUploadResult, MultiFileUploadResult } from '@/services/file.service';
@@ -20,6 +20,7 @@ interface FileUploadProps {
   multiple?: boolean;
   showUploadButton?: boolean;
   customFileName?: string;
+  autoUpload?: boolean; // New prop to control auto upload
 }
 
 const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
@@ -29,7 +30,8 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
     accept = 'image/*', 
     multiple = false, 
     showUploadButton = true,
-    customFileName 
+    customFileName,
+    autoUpload = false // Default to false to maintain backward compatibility
   } = props;
   
   const { t } = useLanguage();
@@ -114,9 +116,14 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
       setFileList([file]);
     }
     
-    if (file.status === 'done') {
-      // File is selected, but not yet uploaded
-      return;
+    // Auto upload when file is selected if autoUpload is enabled
+    if (autoUpload && file.status !== 'done') {
+      if (!multiple) {
+        // For single file upload
+        const fileToUpload = file.originFileObj || file;
+        await handleSingleFileUpload(fileToUpload);
+      }
+      // For multiple files, we'll handle them when the user clicks upload
     }
   };
 
@@ -165,7 +172,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
         </p>
       </Dragger>
       
-      {showUploadButton && (
+      {showUploadButton && !autoUpload && (
         <div className="mt-4 flex justify-center">
           <Button 
             type="primary" 

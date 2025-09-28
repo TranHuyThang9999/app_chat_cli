@@ -325,7 +325,8 @@ export default function UserProfile() {
                     onUploadSuccess={handleAvatarUploadSuccess}
                     accept="image/*"
                     multiple={false}
-                    showUploadButton={true}
+                    showUploadButton={false}
+                    autoUpload={true}
                   />
                   <input
                     type="hidden"
