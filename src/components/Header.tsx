@@ -53,6 +53,7 @@ export default function Header() {
           <nav className="hidden md:flex space-x-8">
             <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">{t('navigation.dashboard')}</Link>
             <Link href="/chat" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">{t('navigation.chat')}</Link>
+            <Link href="/users" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Users</Link>
             <Link href="/settings" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">{t('navigation.settings')}</Link>
           </nav>
 
@@ -132,6 +133,7 @@ export default function Header() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link href="/dashboard" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.dashboard')}</Link>
             <Link href="/chat" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.chat')}</Link>
+            <Link href="/users" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Users</Link>
             <Link href="/settings" className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">{t('navigation.settings')}</Link>
              {isLoading ? (
                <div className="flex items-center space-x-2 px-3 py-2">

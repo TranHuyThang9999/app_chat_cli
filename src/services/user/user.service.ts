@@ -23,6 +23,23 @@ export interface UserProfile {
   updatedBy: number;
 }
 
+// Define pagination response structure
+export interface PaginatedResponse<T> {
+  items: T[];
+  totalCount: number;
+  pageIndex: number;
+  pageSize: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+// Define the user list response structure
+export interface UserListResponse {
+  code: number;
+  message: string;
+  data: PaginatedResponse<UserProfile>;
+}
+
 // Define a type for profile update parameters (excluding read-only fields)
 export interface UpdateProfileData {
   nickName?: string;
@@ -67,6 +84,31 @@ export const userService = {
         return response.data.data;
       } else {
         throw new Error(response.data.message || 'Failed to update profile');
+      }
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Fetch list of users with pagination
+   * @param pageIndex - Page number (default: 1)
+   * @param pageSize - Number of items per page (default: 10)
+   * @returns Paginated user list
+   */
+  getUserList: async (pageIndex: number = 1, pageSize: number = 10): Promise<UserListResponse> => {
+    try {
+      const response: AxiosResponse<UserListResponse> = await apiClient.get('/api/Users', {
+        params: {
+          pageIndex,
+          pageSize
+        }
+      });
+      
+      if (response.data.code === 0) {
+        return response.data;
+      } else {
+        throw new Error(response.data.message || 'Failed to fetch user list');
       }
     } catch (error) {
       throw error;
