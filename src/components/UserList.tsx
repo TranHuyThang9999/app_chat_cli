@@ -43,6 +43,13 @@ const UserList: React.FC = () => {
     fetchUsers(newPageIndex);
   };
 
+  // Handle avatar click
+  const handleAvatarClick = (user: UserProfile) => {
+    console.log('Avatar clicked for user:', user);
+    // You can add your custom logic here, such as opening a modal or navigating to user profile
+    // Example: router.push(`/profile/${user.id}`);
+  };
+
   if (loading) {
     return <div className="flex justify-center items-center h-64">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -62,22 +69,26 @@ const UserList: React.FC = () => {
       <h2 className="text-3xl font-bold text-gray-800 mb-6">User Management</h2>
       <p className="text-gray-600 mb-8">Total users: {pagination.totalCount}</p>
       
-      <div className="users-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+      <div className="users-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8 relative">
         {users.map((user) => (
           <div 
             key={user.id} 
-            className="user-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300 relative group"
+            className="user-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 transition-all duration-300 relative group"
           >
             <div className="p-4">
-              <div className="user-avatar flex justify-center mb-3">
+              <div className="user-avatar flex justify-center mb-3 relative">
                 {user.avatar ? (
                   <img 
                     src={user.avatar} 
                     alt={user.nickName} 
-                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 cursor-pointer"
+                    onClick={() => handleAvatarClick(user)}
                   />
                 ) : (
-                  <div className="default-avatar w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl font-bold border-2 border-gray-200">
+                  <div 
+                    className="default-avatar w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl font-bold border-2 border-gray-200 cursor-pointer"
+                    onClick={() => handleAvatarClick(user)}
+                  >
                     {user.nickName.charAt(0)}
                   </div>
                 )}
@@ -87,8 +98,8 @@ const UserList: React.FC = () => {
               </div>
             </div>
             
-            {/* Hover overlay with details */}
-            <div className="absolute inset-0 bg-white bg-opacity-90 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center">
+            {/* Hover overlay with details above the card */}
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-white rounded-lg shadow-xl p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none">
               <div className="text-center">
                 <h3 className="font-bold text-gray-800 mb-2">{user.nickName}</h3>
                 <div className="text-xs text-gray-600 space-y-1">
